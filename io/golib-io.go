@@ -1,18 +1,47 @@
-package golibIO
+package golib_io
 
 import (
 	"bufio"
-	"io"
+	"os"
 	"strconv"
 )
 
-func NSingle(r io.Reader) int {
-	var scanner = bufio.NewScanner(r)
-	scanner.Scan()
+var scanner = bufio.NewScanner(os.Stdin)
 
-	ans, err := strconv.Atoi(scanner.Text())
+func init() {
+	// 読み込みの区切り方を指定
+	scanner.Split(bufio.ScanWords)
+}
+
+func ReadSingle() int {
+	scanner.Scan()
+	num, err := strconv.Atoi(scanner.Text())
 	if err != nil {
 		panic(err)
 	}
-	return ans
+
+	return num
+}
+
+func ReadDouble() (int, int){
+	return ReadSingle(), ReadSingle()
+}
+
+func ReadNs(c int) []int {
+	var res []int
+
+	for i := 1; scanner.Scan(); i++ {	
+		num, err := strconv.Atoi(scanner.Text())
+		if err != nil {
+			panic(err)
+		}
+
+		res = append(res, num)
+
+		if i == c {
+			break
+		}
+	}
+
+	return res
 }
